@@ -1,0 +1,20 @@
+{
+  "name": "pure_server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Max Chistiakov",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "watch:server": "nodemon server.js",
+    "start": "cross-env NODE_ENV=production && node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "1.4.6",
+    "cors": "2.8.5",
+    "cross-env": "7.0.3",
+    "express": "^4.18.2",
+    "mongodb": "5",
+    "nodemon": "2.0.15"
+  }
+}
