@@ -4,6 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { resolve } from 'path'
 import dotenv from 'dotenv'
+import axios from 'axios'
 
 import { Html } from './html.js'
 
@@ -60,6 +61,23 @@ server.get('/products', async (req, res) => {
   }
 });
 
+
+server.get('/horoscope', async (req, res) => {
+  const sign = req.query.sign;
+  
+  if (!sign) {
+    return res.status(400).json({ error: 'Знак зодиака (sign) обязателен' });
+  }
+  
+  try {
+  const apiResponse = await axios.get(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${sign}&day=TODAY`);
+  const result = apiResponse.data.data.horoscope_data
+  res.json(result);
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Не удалось получить гороскоп' });
+  }
+});
 
 server.get('/*', (req, res) => {
   const initialState = {
