@@ -92,12 +92,12 @@ server.get('/horoscope/weekly', async (req, res) => {
   }
   
   try {
-  const apiResponse = await axios.get(`https://horscope-app-api.vercel.app/api/v1/get-horscope/weekly?sign=${sign}`);
+  const apiResponse = await axios.get(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/weekly?sign=${sign}`);
   const result = apiResponse.data.data.horoscope_data
   res.json(result);
   } catch (error) {
   console.error(error);
-  res.status(500).json({ error: 'Не удалось получить гороскоп' });
+  res.status(500).json({ error: 'Не удалось получить гороскоп на неделю' });
   }
 });
 
