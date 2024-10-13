@@ -64,7 +64,7 @@ server.get('/products', async (req, res) => {
 
 server.get('/horoscope', async (req, res) => {
   const sign = req.query.sign;
-  const date = req.query.date;
+  let date = req.query.date;
   
   if (!sign) {
     return res.status(400).json({ error: 'Знак зодиака (sign) обязателен' });
@@ -79,8 +79,15 @@ server.get('/horoscope', async (req, res) => {
   const result = apiResponse.data.data.horoscope_data
   res.json(result);
   } catch (error) {
-  console.error(error);
-  res.status(500).json({ error: 'Не удалось получить гороскоп' });
+    console.error('Первый запрос не удался, пробуем другую ссылку:', error);
+    try {
+      const fallbackResponse = await axios.get(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${sign}&day=tomorrow`); // Укажите другую ссылку
+      const fallbackResult = fallbackResponse.data.data.horoscope_data;
+      return res.json(fallbackResult);
+    } catch (fallbackError) {
+    console.error(fallbackError);
+    res.status(500).json({ fallbackError: 'Не удалось получить гороскоп' });
+    }
   }
 });
 
