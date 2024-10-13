@@ -64,13 +64,18 @@ server.get('/products', async (req, res) => {
 
 server.get('/horoscope', async (req, res) => {
   const sign = req.query.sign;
+  const date = req.query.date;
   
   if (!sign) {
     return res.status(400).json({ error: 'Знак зодиака (sign) обязателен' });
   }
+
+  if (!date) {
+    date = "TODAY"
+  }
   
   try {
-  const apiResponse = await axios.get(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${sign}&day=TODAY`);
+  const apiResponse = await axios.get(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${sign}&day=${date}`);
   const result = apiResponse.data.data.horoscope_data
   res.json(result);
   } catch (error) {
