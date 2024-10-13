@@ -84,6 +84,23 @@ server.get('/horoscope', async (req, res) => {
   }
 });
 
+server.get('/horoscope/weekly', async (req, res) => {
+  const sign = req.query.sign;
+  
+  if (!sign) {
+    return res.status(400).json({ error: 'Знак зодиака (sign) обязателен' });
+  }
+  
+  try {
+  const apiResponse = await axios.get(`https://horscope-app-api.vercel.app/api/v1/get-horscope/weekly?sign=${sign}`);
+  const result = apiResponse.data.data
+  res.json(result);
+  } catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Не удалось получить гороскоп' });
+  }
+});
+
 server.get('/*', (req, res) => {
   const initialState = {
     location: req.url
